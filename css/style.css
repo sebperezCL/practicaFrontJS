@@ -3,5 +3,17 @@ main {
 }
 
 .margin-custom {
-  margin: 5rem 0 0 0;
+  margin: 3rem auto 0 auto;
+}
+
+.custom-padding-right {
+  padding-right: 1.5rem;
+}
+
+.align-custom-label {
+  padding-left: 0;
+}
+
+.margin-custom-select {
+  margin-right: 1.5rem;
 }
