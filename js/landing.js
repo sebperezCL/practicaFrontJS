@@ -11,7 +11,7 @@ function main () {
   const btnNext = document.querySelector('#btn_next');
   const modalDetails = document.querySelector('#modal_details');
   const modalClose = document.querySelector('.ebcf_close');
-
+  let rutaBase = '';
   // Si el usuario no está logueado no muestra nada
   if (!name) {
     msgUser.innerHTML = 'USUARIO DESCONOCIDO';
@@ -19,6 +19,24 @@ function main () {
     moviesContent.classList.add('d-none');
     return;
   }
+
+  // Cargamos la ruta base indicada por la API para las imágenes
+  const urlConfig = 'https://api.themoviedb.org/3/configuration?api_key=' + apikey;
+  fetch(urlConfig)
+    .then( resp => {
+      if (resp.status < 200 || resp.status >= 300) {
+        throw new Error('HTTP Error ' + resp.status);        }
+      return resp.json();
+    })
+    .then( data => {
+      rutaBase = data.images.base_url;
+    })
+    .catch( error => {
+      console.log(error.message);
+      msgSearch.innerHTML = 'Resultados - Error al cargar resultados';
+      msgSearch.classList.add('text-danger');
+    });
+
 
   // Eventos para cerrar el modal cuando corresponda
   window.addEventListener('click', (ev) => { // cerrar modal con click afuera de la ventana
@@ -36,7 +54,6 @@ function main () {
   // Evento para la carga de películas
   btnLoad.addEventListener('click', onLoadMovies);
 
-
   moviesContent.classList.add('invisible');
 
   msgUser.innerHTML = 'Bienvenido: ' + name;
@@ -51,6 +68,7 @@ function main () {
     // Obtener la configuración de rutas
     // https://api.themoviedb.org/3/configuration?api_key=e8aa0b8b063fec77d145025c9a5aa4c1
 
+    // Carga la primera página del listado de películas
     loadMovies(1);
     btnPrev.addEventListener('click', () => {
       loadMovies(queryPage-1);
@@ -86,10 +104,10 @@ function main () {
         console.log(error.message);
         msgSearch.innerHTML = 'Resultados - Error al cargar resultados';
         msgSearch.classList.add('text-danger');
-      }
-      );
+      });
   }
 
+  // Carga la lista de películas en la tabla de resultados
   function procesarPeliculas (movies) {
     const resultsTable = document.querySelector('#results_table');
     let html = '';
@@ -129,7 +147,28 @@ function main () {
                           </div>
                           <div class="card-body">
                             <h5 class="card-title">Detalles</h5>
-                            <p class="card-text">${data.overview}</p>
+                            <div class="row">
+                              <div class="col text-center mb-4 mt-3">
+                                <img src="${rutaBase}w185${data.poster_path}" alt="movie poster">
+                              </div>
+                            </div>
+                            <p class="card-text text-justify">${data.overview}</p>
+                            <div class="row">
+                              <div class="col">
+                                <span>Popularidad: ${data.popularity}</span>
+                              </div>
+                              <div class="col">
+                                <span>Fecha: ${data.release_date}</span>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <span>Voto promedio: ${data.vote_average}</span>
+                              </div>
+                              <div class="col">
+                                <span>Status: ${data.status}</span>
+                              </div>
+                            </div>
                           </div>
                         </div>`;
           movieDetail.innerHTML = html;
