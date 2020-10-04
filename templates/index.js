@@ -1,4 +1,4 @@
-export const templateLanding = {
+export const templateIndex = {
   render: () => {
     let html = `
     <div class="container">

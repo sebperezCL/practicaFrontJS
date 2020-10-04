@@ -14,21 +14,21 @@ export const templateRegister = {
                   <legend class="h5">Datos Personales</legend>
                   <div class="form-group">
                     <label for="i_name">Nombre y Apellidos</label>
-                    <input type="text" class="form-control tocheck" id="i_name" placeholder="Ingrese nombre completo" required>
+                    <input type="text" class="form-control tocheck" id="name" placeholder="Ingrese nombre completo" required>
                   </div>
                   <label class="control-label">Género</label>
                   <div class="form-group d-flex">
                     <div class="custom-control custom-radio custom-padding-right">
-                      <input type="radio" id="radioHombre" name="genero" class="custom-control-input tocheck" required>
-                      <label class="custom-control-label" for="radioHombre">Hombre</label>
+                      <input type="radio" id="Hombre" name="genero" class="custom-control-input tocheck" required>
+                      <label class="custom-control-label" for="Hombre">Hombre</label>
                     </div>
                     <div class="custom-control custom-radio custom-padding-right">
-                      <input type="radio" id="radioMujer" name="genero" class="custom-control-input tocheck">
-                      <label class="custom-control-label" for="radioMujer">Mujer</label>
+                      <input type="radio" id="Mujer" name="genero" class="custom-control-input tocheck">
+                      <label class="custom-control-label" for="Mujer">Mujer</label>
                     </div>
                     <div class="custom-control custom-radio custom-padding-right">
-                      <input type="radio" id="radioOtro" name="genero" class="custom-control-input tocheck">
-                      <label class="custom-control-label" for="radioOtro">Otro</label>
+                      <input type="radio" id="Otro" name="genero" class="custom-control-input tocheck">
+                      <label class="custom-control-label" for="Otro">Otro</label>
                     </div>
                   </div>
                   <div class="row">
@@ -37,6 +37,8 @@ export const templateRegister = {
                     </div>
                     <div class="col">
                       <label class="control-label align-custom-label">Provincia</label>
+                      <i class="fas fa-sync fa-spin invisible" id="spinner"></i>
+                      <div class="invisible text-danger" id="msg_fetcherror"></div>
                     </div>
                   </div>
                   <div class="form-group d-flex">
@@ -51,7 +53,7 @@ export const templateRegister = {
                   </div>
                   <div class="form-group">
                     <label for="i_phone">Teléfono móvil</label>
-                    <input type="text" class="form-control tocheck" id="i_phone" placeholder="Ingrese en formato +34 999 999 999" required>
+                    <input type="text" class="form-control tocheck" id="phone" placeholder="Ingrese en formato +34 999 999 999" required>
                   </div>
                 </fieldset>
                 <fieldset>
@@ -65,31 +67,31 @@ export const templateRegister = {
                     </div>
                   </div>
                   <div class="form-group d-flex">
-                      <input type="email" class="form-control margin-custom-select tocheck" id="i_email" placeholder="Ingrese su correo usuario@correo.com" required>
-                      <input type="text" class="form-control tocheck" id="i_username" placeholder="Ingrese nombre de usuario" required>
+                      <input type="email" class="form-control margin-custom-select tocheck" id="email" placeholder="Ingrese su correo usuario@correo.com" required>
+                      <input type="text" class="form-control tocheck" id="username" placeholder="Ingrese nombre de usuario" required>
                   </div>
                   <div class="row">
                     <div class="col">
-                      <label class="control-label">Password</label>
+                      <label id="msg_pwd" class="control-label">Password</label>
                     </div>
                     <div class="col">
                       <label class="control-label align-custom-label">Confirmar Password</label>
                     </div>
                   </div>
                   <div class="form-group d-flex">
-                      <input type="password" class="form-control margin-custom-select tocheck" id="i_password" placeholder="Ingrese su contraseña" required>
-                      <input type="password" class="form-control tocheck" id="i_password_confirm" placeholder="Repita su contraseña" required>
+                      <input type="password" class="form-control margin-custom-select tocheck" id="password" placeholder="Ingrese su contraseña" required>
+                      <input type="password" class="form-control tocheck" id="password_confirm" placeholder="Repita su contraseña" required>
                   </div>
                   <div class="form-group">
                     <label for="i_apikey">API Key</label>
-                    <input type="text" class="form-control tocheck" id="i_apikey" placeholder="Ingrese la clave para la API" required>
+                    <input type="text" class="form-control tocheck" id="apikey" placeholder="Ingrese la clave para la API" required>
                   </div>
                 </fieldset>
                 <fieldset>
                   <legend class="h5">Otros</legend>
                   <div class="form-group">
-                    <label for="i_apikey">API Key</label>
-                    <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+                    <label for="comentarios">Comentarios</label>
+                    <textarea class="form-control" id="comentarios" rows="3"></textarea>
                   </div>
                   <div class="form-check">
                     <label id="chk_condiciones" class="form-check-label">
