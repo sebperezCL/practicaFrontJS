@@ -9,31 +9,44 @@ function main () {
   const btnLoad = document.querySelector('#btn_load');
   const btnPrev = document.querySelector('#btn_prev');
   const btnNext = document.querySelector('#btn_next');
+  const modalDetails = document.querySelector('#modal_details');
+  const modalClose = document.querySelector('.ebcf_close');
 
-  btnLoad.addEventListener('click', onLoadMovies);
-
+  // Si el usuario no está logueado no muestra nada
   if (!name) {
-    msgUser.innerHTML = 'USUARIO NO REGISTRADO';
+    msgUser.innerHTML = 'USUARIO DESCONOCIDO';
     moviesSearch.classList.add('d-none');
     moviesContent.classList.add('d-none');
     return;
   }
+
+  // Eventos para cerrar el modal cuando corresponda
+  window.addEventListener('click', (ev) => { // cerrar modal con click afuera de la ventana
+    if (ev.target == modalDetails) {
+      modalDetails.classList.remove('d-block');
+      modalDetails.classList.add('d-none');
+    }
+  });
+
+  modalClose.addEventListener('click', () => {
+    modalDetails.classList.remove('d-block');
+    modalDetails.classList.add('d-none');
+  });
+
+  // Evento para la carga de películas
+  btnLoad.addEventListener('click', onLoadMovies);
+
+
+  moviesContent.classList.add('invisible');
+
   msgUser.innerHTML = 'Bienvenido: ' + name;
-
-  if (btnPrev) {
-
-  }
 
   function onLoadMovies () {
     btnLoad.innerHTML = 'Cargando... <i class="fas fa-sync fa-spin"></i>';
-    //e8aa0b8b063fec77d145025c9a5aa4c1
-    // https://api.themoviedb.org/3/
+    moviesContent.classList.remove('invisible');
 
     // Buscar películas
     // https://api.themoviedb.org/3/discover/movie?api_key=e8aa0b8b063fec77d145025c9a5aa4c1&language=es-ES&sort_by=popularity.desc&page=1
-
-    // Ver detalles película
-    // https://api.themoviedb.org/3/movie/497582?api_key=e8aa0b8b063fec77d145025c9a5aa4c1&language=es-ES
 
     // Obtener la configuración de rutas
     // https://api.themoviedb.org/3/configuration?api_key=e8aa0b8b063fec77d145025c9a5aa4c1
@@ -97,23 +110,39 @@ function main () {
 
   function onClickDetalle (ev) {
     const idMovie = ev.target.id.replace('btn_', '');
-    const row = document.querySelector('#row_' + idMovie);
-    if (row) {
-      const html = ` <div class="col-10">
-                      <div class="card border-info mb-3" style="max-width: 20rem;">
-                        <div class="card-header">
-                          <h5>Ver Películas</h5>
-                        </div>
-                        <div class="card-body">
-                          <p class="card-text">Presione para ir a la lista de películas</p>
-                          <button type="button" id="btn_ver" class="btn btn-info">Ver</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>`;
-      row.innerHTML = html;
-      console.log('click en pelicula', idMovie);
-    }
+    const movieDetail = document.querySelector('#movie_detail');
+    // Ver detalles película
+    const url = 'https://api.themoviedb.org/3/movie/' + idMovie + '?api_key=' + apikey + '&language=es-ES';
+
+    fetch(url)
+      .then( resp => {
+        if (resp.status < 200 || resp.status >= 300) {
+          throw new Error('HTTP Error ' + resp.status);        }
+        return resp.json();
+      })
+      .then( data => {
+        console.log(data);
+        if (movieDetail) {
+          const html = `<div class="card border-primary mb-3">
+                          <div class="card-header">
+                            <h5>Película: ${data.title}</h5>
+                          </div>
+                          <div class="card-body">
+                            <h5 class="card-title">Detalles</h5>
+                            <p class="card-text">${data.overview}</p>
+                          </div>
+                        </div>`;
+          movieDetail.innerHTML = html;
+          console.log('click en pelicula', idMovie);
+          document.querySelector('#modal_details').classList.add('d-block');
+        }
+      })
+      .catch( error => {
+        console.log(error.message);
+        msgSearch.innerHTML = 'Resultados - Error al cargar resultados';
+        msgSearch.classList.add('text-danger');
+      }
+      );
   }
 }
 
