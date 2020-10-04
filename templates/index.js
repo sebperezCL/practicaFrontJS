@@ -30,6 +30,17 @@ export const templateIndex = {
               </div>
             </div>
           </div>
+          <div class="col d-flex justify-content-center">
+            <div class="card border-info mb-3" style="max-width: 20rem;">
+              <div class="card-header">
+                <h5>Ver Películas</h5>
+              </div>
+              <div class="card-body">
+                <p class="card-text">Presione para ir a la lista de películas</p>
+                <button type="button" id="btn_ver" class="btn btn-info">Ver</button>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
     `;

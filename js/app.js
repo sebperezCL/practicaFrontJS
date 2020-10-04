@@ -6,27 +6,34 @@ function main () {
   const mainSection = document.querySelector('#main-landing');
   mainSection.innerHTML = templateIndex.render();
 
-  const btn_register = document.querySelector('#btn_register');
-  const btn_login = document.querySelector('#btn_login');
+  const btnRenderRegister = document.querySelector('#btn_register');
+  const btnRenderLogin = document.querySelector('#btn_login');
+  const btnRenderVer = document.querySelector('#btn_ver');
 
-  if (btn_register) {
-    btn_register.addEventListener('click', onRenderRegistro);
+  if (btnRenderRegister) {
+    btnRenderRegister.addEventListener('click', onRenderRegistro);
   }
 
-  if (btn_login) {
-    btn_login.addEventListener('click', onRenderLogin);
+  if (btnRenderLogin) {
+    btnRenderLogin.addEventListener('click', onRenderLogin);
+  }
+
+  if (btnRenderVer) {
+    btnRenderVer.addEventListener('click', () => {
+      window.location = 'landing.html';
+    });
   }
 
   function onRenderRegistro () {
     mainSection.innerHTML = templateRegister.render();
 
     // Selecciono elementos del nuevo formulario
-    const btn_register = document.querySelector('#btn_submit_register');
-    const select_nac = document.querySelector('#select_nac');
+    const btnRegister = document.querySelector('#btn_submit_register');
+    const selectNac = document.querySelector('#select_nac');
 
     // Defino los eventos para los elementos
-    if (select_nac) { select_nac.addEventListener('change', onSelectNac); }
-    if (btn_register) { btn_register.addEventListener('click', onRegistrar); }
+    if (selectNac) { selectNac.addEventListener('change', onSelectNac); }
+    if (btnRegister) { btnRegister.addEventListener('click', onRegistrar); }
   }
 
   function onRegistrar(ev) {
@@ -39,24 +46,24 @@ function main () {
     }
 
     // Revisar si la contraseña se ingresó bien al momento de confirmarla
-    const msg_pwd = document.querySelector('#msg_pwd');
+    const msgPwd = document.querySelector('#msg_pwd');
     // Selecciono los input password de esta forma ya que la longitud del array puede variar
     // dependiendo si el usuario escogió nacionalidad española o no
-    const i_pwd = inputs.find(item => item.id === 'password');
-    const i_pwd_confirm = inputs.find(item => item.id === 'password_confirm');
-    if (!(i_pwd.value === i_pwd_confirm.value)) {
-      i_pwd.classList.add('is-invalid');
-      i_pwd_confirm.classList.add('is-invalid');
-      msg_pwd.innerHTML = 'Password' + ' - las contraseñas no coinciden';
-      msg_pwd.classList.add('text-danger');
+    const iPwd = inputs.find(item => item.id === 'password');
+    const iPwdConfirm = inputs.find(item => item.id === 'password_confirm');
+    if (!(iPwd.value === iPwdConfirm.value)) {
+      iPwd.classList.add('is-invalid');
+      iPwdConfirm.classList.add('is-invalid');
+      msgPwd.innerHTML = 'Password' + ' - las contraseñas no coinciden';
+      msgPwd.classList.add('text-danger');
       console.dir('error pwd');
       return;
     }
     // Limpio los mensajes
-    msg_pwd.innerHTML = 'Password';
-    msg_pwd.classList.remove('text-danger');
-    i_pwd.classList.remove('is-invalid');
-    i_pwd_confirm.classList.remove('is-invalid');
+    msgPwd.innerHTML = 'Password';
+    msgPwd.classList.remove('text-danger');
+    iPwd.classList.remove('is-invalid');
+    iPwdConfirm.classList.remove('is-invalid');
 
     // Guardo datos en Local Storage
     const user = {};
@@ -81,10 +88,10 @@ function main () {
   }
 
   function onSelectNac (ev) {
-    const msg_error = document.querySelector('#msg_fetcherror');
+    const msgError = document.querySelector('#msg_fetcherror');
     const spinner = document.querySelector('#spinner');
-    msg_error.classList.add('invisible');
-    msg_error.innerHTML = '';
+    msgError.classList.add('invisible');
+    msgError.innerHTML = '';
     spinner.classList.add('invisible');
     // Si elige nacionalidad española entonces cargamos las provincias de la API
     if (ev.target.value === 'esp') {
@@ -102,40 +109,40 @@ function main () {
         })
         .catch( error => {
           console.log(error.message);
-          msg_error.classList.remove('invisible');
-          msg_error.innerHTML = 'Error al recuperar la información de provincias';
+          msgError.classList.remove('invisible');
+          msgError.innerHTML = 'Error al recuperar la información de provincias';
         }
         );
     } else {
-      const select_prov = document.querySelector('#select_prov');
-      select_prov.removeAttribute('required');
-      select_prov.setAttribute('disabled', true);
-      select_prov.classList.remove('tocheck');
-      select_prov.classList.remove('is-invalid');
+      const selectProv = document.querySelector('#select_prov');
+      selectProv.removeAttribute('required');
+      selectProv.setAttribute('disabled', true);
+      selectProv.classList.remove('tocheck');
+      selectProv.classList.remove('is-invalid');
     }
   }
 
   // Construimos el select de provincias
   function cargaProvincias (data) {
-    const select_prov = document.querySelector('#select_prov');
-    select_prov.setAttribute('required', true);
-    select_prov.removeAttribute('disabled');
-    select_prov.classList.add('tocheck');
-    if (select_prov) {
+    const selectProv = document.querySelector('#select_prov');
+    selectProv.setAttribute('required', true);
+    selectProv.removeAttribute('disabled');
+    selectProv.classList.add('tocheck');
+    if (selectProv) {
       let html = '<option></option>';
       data.forEach(item => {
         html += `<option value="${item.label}">${item.label}</option>`;
       });
-      select_prov.innerHTML = html;
+      selectProv.innerHTML = html;
     }
   }
 
   function onRenderLogin () {
     mainSection.innerHTML = templateLogin.render();
-    const btn_login = document.querySelector('#btn_login');
+    const btnLogin = document.querySelector('#btn_login');
 
-    if (btn_login) {
-      btn_login.addEventListener('click', onLogin);
+    if (btnLogin) {
+      btnLogin.addEventListener('click', onLogin);
     }
   }
 
@@ -144,8 +151,8 @@ function main () {
 
     const form = document.querySelector('form');
     const inputs = [...form.querySelectorAll('.tocheck')];
-    const msg_warning = document.querySelector('#msg_warning');
-    msg_warning.classList.add('d-none');
+    const msgWarning = document.querySelector('#msg_warning');
+    msgWarning.classList.add('d-none');
 
     if (!validarForm(form, inputs)) {
       return;
@@ -160,7 +167,7 @@ function main () {
     if (usersDB) {
       const userFound = usersDB.find(item => item.username == user);
       if (!userFound || userFound.password != pwd) {
-        msg_warning.classList.remove('d-none');
+        msgWarning.classList.remove('d-none');
         return;
       }
       window.sessionStorage.setItem('username', userFound.username);

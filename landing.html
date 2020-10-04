@@ -17,9 +17,29 @@
           <div class="card-header">
             <h5 id='msg_user'>Ingrese sus datos de usuario</h5>
           </div>
-          <div id="movies_content" class="card-body">
+          <div id="movies_search" class="card-body">
             <p class="card-text">Presione para cargar la información</p>
             <button type="submit" id="btn_load" class="btn btn-primary">Cargar</button>
+          </div>
+        </div>
+      </div>
+      <div id="movies_content" class="col-10">
+        <div class="card border-primary mb-3">
+          <div class="card-header">
+            <h5 id='msg_user'>Resultados</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Título</th>
+                  <th scope="col">Fecha Release</th>
+                  <th scope="col">Detalles</th>
+                </tr>
+              </thead>
+              <tbody id="results_table"></tbody>
+            </table>
           </div>
         </div>
       </div>
