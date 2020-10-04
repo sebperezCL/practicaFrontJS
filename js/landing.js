@@ -1,9 +1,14 @@
 function main () {
+  let queryPage = 1;
   const msgUser = document.querySelector('#msg_user');
+  const msgSearch = document.querySelector('#msg_search');
   const moviesSearch = document.querySelector('#movies_search');
   const moviesContent = document.querySelector('#movies_content');
   const name = window.sessionStorage.getItem('name');
+  const apikey = window.sessionStorage.getItem('apikey');
   const btnLoad = document.querySelector('#btn_load');
+  const btnPrev = document.querySelector('#btn_prev');
+  const btnNext = document.querySelector('#btn_next');
 
   btnLoad.addEventListener('click', onLoadMovies);
 
@@ -14,6 +19,10 @@ function main () {
     return;
   }
   msgUser.innerHTML = 'Bienvenido: ' + name;
+
+  if (btnPrev) {
+
+  }
 
   function onLoadMovies () {
     btnLoad.innerHTML = 'Cargando... <i class="fas fa-sync fa-spin"></i>';
@@ -29,7 +38,19 @@ function main () {
     // Obtener la configuración de rutas
     // https://api.themoviedb.org/3/configuration?api_key=e8aa0b8b063fec77d145025c9a5aa4c1
 
-    const url = 'https://api.themoviedb.org/3/discover/movie?api_key=e8aa0b8b063fec77d145025c9a5aa4c1&language=es-ES&sort_by=popularity.desc&page=1';
+    loadMovies(1);
+    btnPrev.addEventListener('click', () => {
+      loadMovies(queryPage-1);
+      queryPage--;
+    });
+    btnNext.addEventListener('click', () => {
+      loadMovies(queryPage+1);
+      queryPage++;
+    });
+  }
+
+  function loadMovies (page) {
+    const url = 'https://api.themoviedb.org/3/discover/movie?api_key=' + apikey + '&language=es-ES&sort_by=popularity.desc&page=' + page;
     fetch(url)
       .then( resp => {
         if (resp.status < 200 || resp.status >= 300) {
@@ -39,10 +60,19 @@ function main () {
       .then( data => {
         btnLoad.innerHTML = 'Cargar';
         console.log(data);
+        msgSearch.innerHTML = 'Resultados - Página ' + page;
+        msgSearch.classList.remove('text-danger');
         procesarPeliculas(data.results);
+        if (queryPage == 1) {
+          btnPrev.classList.add('invisible');
+        } else {
+          btnPrev.classList.remove('invisible');
+        }
       })
       .catch( error => {
         console.log(error.message);
+        msgSearch.innerHTML = 'Resultados - Error al cargar resultados';
+        msgSearch.classList.add('text-danger');
       }
       );
   }
